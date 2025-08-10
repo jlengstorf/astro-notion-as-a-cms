@@ -1,7 +1,9 @@
 import type { QueryDatabaseParameters } from '@notionhq/client/build/src/api-endpoints';
 import type { BlockObjectResponse } from '@notionhq/client';
+import type { GetImageResult } from 'astro';
 import type { Loader } from 'astro/loaders';
 import { Client, collectPaginatedAPI } from '@notionhq/client';
+import { getImage } from 'astro:assets';
 import { z } from 'astro:schema';
 import { blocksToHTML } from './render';
 
@@ -137,21 +139,39 @@ async function parseNotionProperty(property: z.infer<typeof NotionProperty>) {
 		case 'files':
 			const details = property.files.at(0);
 
+			let image: GetImageResult;
+
 			try {
 				switch (details?.type) {
 					// NOTE: this ONLY expects images right now.
 					// It will fail if any other file is supplied.
 					case 'external':
-						return details.external.url;
+						image = await getImage({
+							src: details.external.url,
+							// height: 900,
+							// width: 1600,
+							format: 'jpg',
+							inferSize: true,
+						});
+						break;
 
 					case 'file':
-						return details.file.url;
+						image = await getImage({
+							src: details.file.url,
+							// height: 900,
+							// width: 1600,
+							format: 'jpg',
+							inferSize: true,
+						});
+						break;
 
 					default:
 						throw new Error(
 							`unhandled file type ${JSON.stringify(details, null, 2)}`,
 						);
 				}
+
+				return image.src;
 			} catch (error) {
 				console.log(
 					`error parsing notion property ${JSON.stringify(property, null, 2)}`,
