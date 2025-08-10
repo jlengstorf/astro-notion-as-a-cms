@@ -4,7 +4,6 @@ import netlify from '@astrojs/netlify';
 
 // https://astro.build/config
 export default defineConfig({
-	output: 'server',
 	image: {
 		remotePatterns: [
 			{
