@@ -2,7 +2,7 @@ import type {
 	BlockObjectResponse,
 	RichTextItemResponse,
 } from '@notionhq/client';
-import { getImage, inferRemoteSize } from 'astro:assets';
+import { cloudinary } from '../cloudinary';
 
 function renderRichText(rich_text: RichTextItemResponse[]) {
 	return rich_text
@@ -52,19 +52,24 @@ async function renderImage(
 			break;
 	}
 
-	// const dimensions = await inferRemoteSize(imageUrl);
-	const imgResult = await getImage({
-		src: imageUrl,
-		// height: dimensions.height,
-		// width: dimensions.width,
-		widths: [300, 600, 1200, 1800],
-		format: 'jpg',
-		inferSize: true,
-	});
+	try {
+		const upload = await cloudinary.uploader.upload(imageUrl, {
+			overwrite: false,
+			use_filename: true,
+			unique_filename: false,
+		});
+
+		imageUrl = cloudinary.url(upload.public_id, {
+			width: 1600,
+			height: 900,
+		});
+	} catch (err) {
+		console.error(err);
+	}
 
 	const caption = renderRichText(block.image.caption);
 
-	markup = `<img src="${imgResult.src}" srcSet="${imgResult.srcSet.attribute}" alt="${block.image.caption}" />`;
+	markup = `<img src="${imageUrl}" alt="${block.image.caption}" />`;
 
 	if (caption) {
 		markup = `<figure>${markup} <figcaption>${caption}</figcaption></figure>`;
