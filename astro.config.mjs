@@ -10,7 +10,7 @@ export default defineConfig({
 			{
 				protocol: 'https',
 				hostname: '**.amazonaws.com',
-				pathname: '/**',
+				pathname: '**',
 			},
 		],
 	},
