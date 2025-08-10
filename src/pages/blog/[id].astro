@@ -1,6 +1,14 @@
 ---
-import { getEntry, render } from 'astro:content';
+import { getCollection, getEntry, render } from 'astro:content';
 import Layout from '../../components/layout.astro';
+
+export async function getStaticPaths() {
+	const blogs = await getCollection('blog');
+
+	return blogs.map((blog) => {
+		return { params: { id: blog.id } };
+	});
+}
 
 const { id } = Astro.params;
 
