@@ -2,7 +2,6 @@ import type {
 	BlockObjectResponse,
 	RichTextItemResponse,
 } from '@notionhq/client';
-import { getImage, inferRemoteSize } from 'astro:assets';
 
 function renderRichText(rich_text: RichTextItemResponse[]) {
 	return rich_text
@@ -52,17 +51,10 @@ async function renderImage(
 			break;
 	}
 
-	const dimensions = await inferRemoteSize(imageUrl);
-	const imgResult = await getImage({
-		src: imageUrl,
-		height: dimensions.height,
-		width: dimensions.width,
-		widths: [300, 600, 1200, 1800],
-	});
-
+	// Simple image rendering without Astro's image service
 	const caption = renderRichText(block.image.caption);
 
-	markup = `<img src="${imgResult.src}" srcSet="${imgResult.srcSet.attribute}" alt="${block.image.caption}" />`;
+	markup = `<img src="${imageUrl}" alt="${caption || 'Image'}" loading="lazy" />`;
 
 	if (caption) {
 		markup = `<figure>${markup} <figcaption>${caption}</figcaption></figure>`;
