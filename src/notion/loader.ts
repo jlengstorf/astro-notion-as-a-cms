@@ -146,6 +146,7 @@ async function parseNotionProperty(property: z.infer<typeof NotionProperty>) {
 					// NOTE: this ONLY expects images right now.
 					// It will fail if any other file is supplied.
 					case 'external':
+						console.log(`loading image: ${details.external.url}`);
 						image = await getImage({
 							src: details.external.url,
 							height: 900,
@@ -154,6 +155,7 @@ async function parseNotionProperty(property: z.infer<typeof NotionProperty>) {
 						break;
 
 					case 'file':
+						console.log(`loading image: ${details.file.url}`);
 						image = await getImage({
 							src: details.file.url,
 							height: 900,
@@ -169,6 +171,9 @@ async function parseNotionProperty(property: z.infer<typeof NotionProperty>) {
 
 				return image.src;
 			} catch (error) {
+				console.log(
+					`error parsing notion property ${JSON.stringify(property, null, 2)}`,
+				);
 				console.error(JSON.stringify(error, null, 2));
 				return '';
 			}
@@ -209,6 +214,8 @@ export function notionLoader({
 			try {
 				const data = NotionResult.parse(notionResult);
 				const pages = data.results;
+
+				logger.info(`loaded ${pages.length} pages from Notion`);
 
 				store.clear();
 
@@ -265,9 +272,7 @@ export function notionLoader({
 
 						const html = await blocksToHTML(blocks as BlockObjectResponse[]);
 
-						console.log(html);
-
-						store.set({
+						return store.set({
 							id: rt.plain_text,
 							data,
 							body: JSON.stringify(blocks),
