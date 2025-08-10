@@ -4,13 +4,14 @@ import netlify from '@astrojs/netlify';
 
 // https://astro.build/config
 export default defineConfig({
+	adapter: netlify(),
 	image: {
 		remotePatterns: [
 			{
 				protocol: 'https',
 				hostname: '**.amazonaws.com',
+				pathname: '/**',
 			},
 		],
 	},
-	adapter: netlify(),
 });
