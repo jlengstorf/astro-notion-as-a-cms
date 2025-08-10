@@ -1,16 +1,43 @@
 ---
+import { getCollection } from 'astro:content';
+import Layout from '../components/layout.astro';
 
+const blog = await getCollection('blog');
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<Layout>
+	<h1>Automations for MarisaMorby.com</h1>
+	<section class="blog">
+		{
+			blog.map((entry) => (
+				<article class="blog-preview">
+					<a href={`/blog/${entry.id}`}>
+						<img src={entry.data.share_image} alt={entry.data.title} />
+					</a>
+					<h2>
+						<a href={`/blog/${entry.id}`}>{entry.data.title}</a>
+					</h2>
+					<p>{entry.data.share_description}</p>
+					<p>
+						<a href={`/blog/${entry.id}`}>read &rarr;</a>
+					</p>
+				</article>
+			))
+		}
+	</section>
+</Layout>
+
+<style>
+	.blog {
+		display: grid;
+		gap: 20px;
+		grid-template-columns: repeat(3, minmax(0, 300px));
+	}
+
+	.blog-preview {
+		img {
+			block-size: auto;
+			inline-size: 100%;
+		}
+	}
+</style>

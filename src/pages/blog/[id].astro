@@ -1,0 +1,38 @@
+---
+import { getEntry, render } from 'astro:content';
+import Layout from '../../components/layout.astro';
+
+const { id } = Astro.params;
+
+if (!id) {
+	return Astro.redirect('/404');
+}
+
+const blog = await getEntry('blog', id);
+
+if (!blog) {
+	return Astro.redirect('/404');
+}
+
+const { Content } = await render(blog);
+---
+
+<Layout>
+	<article>
+		<h1>{blog.data.title}</h1>
+
+		<Content />
+	</article>
+</Layout>
+
+<style>
+	article {
+		margin: 80px auto;
+		max-inline-size: 54ch;
+
+		img {
+			block-size: auto;
+			max-inline-size: 100%;
+		}
+	}
+</style>
