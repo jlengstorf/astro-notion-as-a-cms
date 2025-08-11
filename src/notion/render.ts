@@ -62,6 +62,7 @@ async function renderImage(
 		imageUrl = cloudinary.url(upload.public_id, {
 			width: 1600,
 			height: 900,
+			crop: 'fill',
 		});
 	} catch (err) {
 		console.error(err);

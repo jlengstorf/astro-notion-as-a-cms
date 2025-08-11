@@ -11,14 +11,39 @@
 		<title>Use Notion as a CMS for Astro</title>
 	</head>
 	<body>
+		<header>
+			<a href="/" rel="home">Notion as a CMS</a>
+			<nav>
+				<a href="https://github.com/jlengstorf/astro-notion-as-a-cms"
+					>source code</a
+				>
+				<a
+					href="https://www.notion.so/learnwithjason/24a22b3cab0280ad8f63f30d62b482ba?v=24a22b3cab0280fe9f01000ca177b262&source=copy_link"
+					>Notion DB</a
+				>
+			</nav>
+		</header>
+
 		<main>
 			<slot />
 		</main>
+
+		<footer>
+			<p>
+				built by <a href="https://jason.energy/links">Jason Lengstorf</a>
+			</p>
+			<p>
+				<a href="https://github.com/jlengstorf/astro-notion-as-a-cms"
+					>source code</a
+				>
+			</p>
+		</footer>
 	</body>
 </html>
 
 <style>
 	:root {
+		color: #443;
 		font-family:
 			system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
 			'Segoe UI Symbol';
@@ -28,6 +53,72 @@
 		margin: 0;
 	}
 
+	header {
+		display: flex;
+		justify-content: space-between;
+		margin: 20px auto;
+		max-inline-size: 54ch;
+
+		a {
+			color: #110;
+			text-decoration: none;
+
+			&[rel='home'] {
+				font-weight: 800;
+			}
+		}
+
+		nav {
+			display: flex;
+			gap: 16px;
+		}
+	}
+
 	main {
+		margin: 80px auto;
+		max-inline-size: 54ch;
+	}
+
+	footer {
+		display: flex;
+		gap: 16px;
+		justify-content: center;
+		margin: 20px auto 40px;
+		max-inline-size: 54ch;
+
+		p {
+			color: #665;
+			font-size: 0.75em;
+			margin: 0;
+		}
+
+		a {
+			color: inherit;
+		}
+	}
+</style>
+
+<style is:global>
+	h1,
+	h2 {
+		color: #110;
+		line-height: 1.1;
+		margin: 24px 0 0;
+	}
+
+	p {
+		margin: 16px 0 0;
+
+		:is(h1, h2) + & {
+			margin-block-start: 8px;
+		}
+	}
+
+	li {
+		margin: 8px 0 0;
+	}
+
+	strong {
+		color: #221;
 	}
 </style>

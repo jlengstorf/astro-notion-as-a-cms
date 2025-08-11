@@ -27,6 +27,9 @@ const { Content } = await render(blog);
 
 <Layout>
 	<article>
+		<p>
+			<a href="/">&larr; back</a>
+		</p>
 		<h1>{blog.data.title}</h1>
 
 		<Content />
@@ -35,12 +38,15 @@ const { Content } = await render(blog);
 
 <style>
 	article {
-		margin: 80px auto;
-		max-inline-size: 54ch;
-
 		img {
 			block-size: auto;
+			border-radius: 3px;
 			max-inline-size: 100%;
+		}
+
+		figcaption {
+			color: #665;
+			font-size: 0.875em;
 		}
 	}
 </style>

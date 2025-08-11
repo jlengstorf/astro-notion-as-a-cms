@@ -6,21 +6,32 @@ const blog = await getCollection('blog');
 ---
 
 <Layout>
-	<h1>Automations for MarisaMorby.com</h1>
+	<h1>Using Notion as a CMS</h1>
+	<p>
+		These blog posts are pulled from Notion. <a
+			href="https://www.notion.so/learnwithjason/24a22b3cab0280ad8f63f30d62b482ba?v=24a22b3cab0280fe9f01000ca177b262&source=copy_link"
+			>See the Notion database.</a
+		>
+	</p>
+
 	<section class="blog">
 		{
 			blog.map((entry) => (
 				<article class="blog-preview">
-					<a href={`/blog/${entry.id}`}>
+					<a href={`/blog/${entry.id}`} tabindex="-1">
 						<img src={entry.data.share_image} alt={entry.data.title} />
 					</a>
-					<h2>
-						<a href={`/blog/${entry.id}`}>{entry.data.title}</a>
-					</h2>
-					<p>{entry.data.share_description}</p>
-					<p>
-						<a href={`/blog/${entry.id}`}>read &rarr;</a>
-					</p>
+					<div class="details">
+						<h2>
+							<a href={`/blog/${entry.id}`}>{entry.data.title}</a>
+						</h2>
+						<p>{entry.data.share_description}</p>
+						<p>
+							<a href={`/blog/${entry.id}`} tabindex="-1" class="read-more">
+								read &rarr;
+							</a>
+						</p>
+					</div>
 				</article>
 			))
 		}
@@ -31,13 +42,41 @@ const blog = await getCollection('blog');
 	.blog {
 		display: grid;
 		gap: 20px;
-		grid-template-columns: repeat(3, minmax(0, 300px));
+		grid-template-columns: repeat(2, minmax(0, 300px));
+		margin-block-start: 24px;
 	}
 
 	.blog-preview {
+		border: 0.5px solid #ddd;
+		border-radius: 3px;
+
 		img {
 			block-size: auto;
+			border-radius: 3px 3px 0 0;
 			inline-size: 100%;
+		}
+
+		.details {
+			padding: 8px;
+		}
+
+		h2 {
+			font-size: 1.25rem;
+			line-height: 1.1;
+			margin: 0;
+
+			a {
+				color: inherit;
+				text-decoration: none;
+			}
+		}
+
+		p {
+			margin: 4px 0 0;
+		}
+
+		.read-more {
+			font-size: 0.875rem;
 		}
 	}
 </style>

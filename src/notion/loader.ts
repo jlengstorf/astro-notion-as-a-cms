@@ -167,6 +167,7 @@ async function parseNotionProperty(property: z.infer<typeof NotionProperty>) {
 				return cloudinary.url(upload.public_id, {
 					width: 1600,
 					height: 900,
+					crop: 'fill',
 				});
 			} catch (error) {
 				console.log(
